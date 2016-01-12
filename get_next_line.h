@@ -6,7 +6,7 @@
 /*   By: vgosset <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/07 14:12:51 by vgosset           #+#    #+#             */
-/*   Updated: 2016/01/12 16:37:44 by vgosset          ###   ########.fr       */
+/*   Updated: 2016/01/12 17:29:30 by vgosset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,9 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <sys/uio.h>
+# include "lib/libft.h"
+
+# define BUFF_SIZE 32
 
 typedef struct	g_struct
 {
@@ -25,6 +28,6 @@ typedef struct	g_struct
 }			g_struct;
 
 int		get_next_line(int const fd, char **line);
-int		readline(int const fdm char *tmp, char **line);
+int		readline(g_struct **strct, char *tmp, char **line);
 
 #endif
