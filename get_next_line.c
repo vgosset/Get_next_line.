@@ -6,11 +6,49 @@
 /*   By: vgosset <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/07 14:12:05 by vgosset           #+#    #+#             */
-/*   Updated: 2016/01/14 14:22:14 by vgosset          ###   ########.fr       */
+/*   Updated: 2016/01/14 15:50:23 by vgosset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+void	creat_line(int const fd, g_struct **strct)
+{
+	g_struct *line;
+
+	line = *strct;
+	if (*strct == NULL)
+	{
+		*strct = new_strct(fd, NULL);
+		return ;
+	}
+	while (line->next != *strct && line->fd != fd)
+		line = line->next;
+	if (line->fd != fd)
+	{
+		line->next = new_strct(fd, line->next);
+		*strct = line->next;
+		return ;
+	}
+	*strct = line;
+	ft_bzero((*strct)->buf, BUFF_SIZE + 1):
+}
+
+g_struct	*new_strct(int const fd, g_struct *next)
+{
+	g_struct *new;
+	
+	new = malloc(sizeof(*new));
+	if (new == NULL)
+		return (NULL);
+	if (next == NULL)
+		new->next = new;
+	else
+		new->next = new;
+	new->fd = fd;
+	new=>save = NULL;
+	return (new);
+}
 
 int		get_next_line(int const fd, char **line)
 {
@@ -20,7 +58,7 @@ int		get_next_line(int const fd, char **line)
 	i = 0;
 	if (fd < 0 || line == NULL || BUFF_SIZE < 0)
 		return (-1);
-	//Create_line bonus//
+	creat_line(fd, &struc);
 	if (strct->save != NULL && (i = ft_stric(strct->save, '\n', 1)) >= 0)
 	{
 		*line = ft_strsub(strct->save, 0, i);
@@ -53,13 +91,13 @@ int		return_line(g_struct *strct, char **line)
 	}
 	else if (i >= 0 && strct->save)
 	{
-		tmp = ft_strjoin(strct_save, ft_strsub(strct_buf, 0, i));
+		tmp = ft_strjoin(strct->save, ft_strsub(strct->buf, 0, i));
 		*line = tmp;
-		free(strct_save);
+		free(strct->save);
 		if (strct->buf[i + 1])
-			strct->save = ft_strsub(strct_buf, 0, i + 1);
+			strct->save = ft_strsub(strct->buf, 0, i + 1);
 		else
-			strct_save = NULL;
+			strct->save = NULL;
 		return (1);
 	}
 	return (0);
@@ -75,7 +113,7 @@ int		readline(g_struct **strct, char **line)
 	ft_bzero((*strct)->buf, BUFF_SIZE + 1);
 	while ((ret = read((*strct)->fd, (*strct)->buf, BUFF_SIZE)))
 	{
-		if (return_line(line, *strct) == 1)
+		if (return_line(*strct, line) == 1)
 			return (1);
 		else
 		{
