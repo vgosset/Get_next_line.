@@ -6,7 +6,7 @@
 /*   By: vgosset <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/07 14:12:51 by vgosset           #+#    #+#             */
-/*   Updated: 2016/01/12 18:30:18 by vgosset          ###   ########.fr       */
+/*   Updated: 2016/01/14 14:17:27 by vgosset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ typedef struct	g_struct
 	int		fd;
 }			g_struct;
 
+int		returnline(g_struct *strct, char **line);
 int		get_next_line(int const fd, char **line);
-int		readline(g_struct **strct, char *tmp, char **line);
+int		readline(g_struct **strct, char **line);
 
 #endif
