@@ -6,7 +6,7 @@
 /*   By: vgosset <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/07 14:12:05 by vgosset           #+#    #+#             */
-/*   Updated: 2016/01/18 13:06:15 by vgosset          ###   ########.fr       */
+/*   Updated: 2016/01/19 17:08:51 by vgosset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ g_struct	*new_strct(int const fd, g_struct *next)
 	else
 		new->next = next;
 	new->fd = fd;
+	ft_bzero(new->buf, BUFF_SIZE + 1);
 	new->save = NULL;
 	return (new);
 }
@@ -63,11 +64,14 @@ int		get_next_line(int const fd, char **line)
 	{
 		*line = ft_strsub(strct->save, 0, i);
 		ft_strcpy(strct->buf, strct->save + i + 1);
-		free (strct->save);
+		free(strct->save);
 		if (strct->buf[0])
 			strct->save = ft_strdup(strct->buf);
 		else
+		{
 			strct->save = NULL;
+			free(strct->save);
+		}
 		return (1);
 	}
 	return (readline(&strct, line));
@@ -80,25 +84,22 @@ int		return_line(g_struct *strct, char **line)
 
 	i = 0;
 	tmp = NULL;
-	i = ft_stric(strct->buf, '\n', 1);
-	if (i >= 0 && (!(strct->save)))
+	if ((i = ft_stric(strct->buf, '\n', 1)) >= 0 && (!(strct->save)))
 	{
 		*line = ft_strsub(strct->buf, 0, i);
-		if (strct->buf[i + 1])
-			strct->save = ft_strdup(strct->buf + i + 1);
-		else
-			strct->save = NULL;
+		strct->save = strct->buf[i + 1] ?
+			ft_strdup(strct->buf + i + 1) : NULL;
 		return (1);
 	}
 	else if (i >= 0 && strct->save)
 	{
-		tmp = ft_strjoin(strct->save, ft_strsub(strct->buf, 0, i));
+		*line = ft_strsub(strct->buf, 0, i);
+		tmp = ft_strjoin(strct->save, *line);
+		free(*line);
 		*line = tmp;
 		free(strct->save);
-		if (strct->buf[i + 1])
-			strct->save = ft_strsub(strct->buf, 0, i + 1);
-		else
-			strct->save = NULL;
+		strct->save = strct->buf[i + 1] ?
+			ft_strdup(strct->buf + i + 1) : NULL;
 		return (1);
 	}
 	return (0);
@@ -111,7 +112,7 @@ int		readline(g_struct **strct, char **line)
 
 	ret = 0;
 	tmp = NULL;
-	while ((ret = read((*strct)->fd, (*strct)->buf, BUFF_SIZE)))
+	while ((ret = read((*strct)->fd, (*strct)->buf, BUFF_SIZE)) > 0)
 	{
 		if (return_line(*strct, line) == 1)
 			return (1);
@@ -129,7 +130,5 @@ int		readline(g_struct **strct, char **line)
 		(*strct)->save = NULL;
 		return (1);
 	}
-	if (ret < 0)
-		return (-1);
-	return (0);
+	return (ret < 0 ? -1 : 0);
 }
