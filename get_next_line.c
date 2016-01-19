@@ -6,7 +6,7 @@
 /*   By: vgosset <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/07 14:12:05 by vgosset           #+#    #+#             */
-/*   Updated: 2016/01/14 15:50:23 by vgosset          ###   ########.fr       */
+/*   Updated: 2016/01/18 13:06:15 by vgosset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	creat_line(int const fd, g_struct **strct)
 		return ;
 	}
 	*strct = line;
-	ft_bzero((*strct)->buf, BUFF_SIZE + 1):
+	ft_bzero((*strct)->buf, BUFF_SIZE + 1);
 }
 
 g_struct	*new_strct(int const fd, g_struct *next)
@@ -44,9 +44,9 @@ g_struct	*new_strct(int const fd, g_struct *next)
 	if (next == NULL)
 		new->next = new;
 	else
-		new->next = new;
+		new->next = next;
 	new->fd = fd;
-	new=>save = NULL;
+	new->save = NULL;
 	return (new);
 }
 
@@ -58,8 +58,8 @@ int		get_next_line(int const fd, char **line)
 	i = 0;
 	if (fd < 0 || line == NULL || BUFF_SIZE < 0)
 		return (-1);
-	creat_line(fd, &struc);
-	if (strct->save != NULL && (i = ft_stric(strct->save, '\n', 1)) >= 0)
+	creat_line(fd, &strct);
+	if (strct->save != NULL && ((i = ft_stric(strct->save, '\n', 1)) >= 0))
 	{
 		*line = ft_strsub(strct->save, 0, i);
 		ft_strcpy(strct->buf, strct->save + i + 1);
@@ -77,6 +77,7 @@ int		return_line(g_struct *strct, char **line)
 {
 	int		i;
 	char	*tmp;
+
 	i = 0;
 	tmp = NULL;
 	i = ft_stric(strct->buf, '\n', 1);
@@ -110,7 +111,6 @@ int		readline(g_struct **strct, char **line)
 
 	ret = 0;
 	tmp = NULL;
-	ft_bzero((*strct)->buf, BUFF_SIZE + 1);
 	while ((ret = read((*strct)->fd, (*strct)->buf, BUFF_SIZE)))
 	{
 		if (return_line(*strct, line) == 1)
@@ -121,6 +121,7 @@ int		readline(g_struct **strct, char **line)
 			free((*strct)->save);
 			(*strct)->save = tmp;
 		}
+		ft_bzero((*strct)->buf, BUFF_SIZE + 1);
 	}
 	if ((*strct)->save != NULL && ret == 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: vgosset <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/07 14:12:51 by vgosset           #+#    #+#             */
-/*   Updated: 2016/01/14 14:23:42 by vgosset          ###   ########.fr       */
+/*   Updated: 2016/01/18 12:25:54 by vgosset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,13 @@ typedef struct	g_struct
 	char	buf[BUFF_SIZE + 1];
 	char	*save;
 	int		fd;
-}			g_struct;
+	struct	g_struct *next;
+}				g_struct;
 
-int		returnline(g_struct *strct, char **line);
-int		get_next_line(int const fd, char **line);
-int		readline(g_struct **strct, char **line);
+int			return_line(g_struct *strct, char **line);
+int			get_next_line(int const fd, char **line);
+int			readline(g_struct **strct, char **line);
+void		creat_line(int const fd, g_struct **strct);
+g_struct	*new_strct(int const fd, g_struct *next);
 
 #endif
