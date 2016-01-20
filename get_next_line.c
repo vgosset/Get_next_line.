@@ -6,15 +6,15 @@
 /*   By: vgosset <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/01/07 14:12:05 by vgosset           #+#    #+#             */
-/*   Updated: 2016/01/19 17:08:51 by vgosset          ###   ########.fr       */
+/*   Updated: 2016/01/20 16:44:38 by vgosset          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void	creat_line(int const fd, g_struct **strct)
+void		creat_line(int const fd, g_struct **strct)
 {
-	g_struct *line;
+	g_struct	*line;
 
 	line = *strct;
 	if (*strct == NULL)
@@ -37,7 +37,7 @@ void	creat_line(int const fd, g_struct **strct)
 g_struct	*new_strct(int const fd, g_struct *next)
 {
 	g_struct *new;
-	
+
 	new = malloc(sizeof(*new));
 	if (new == NULL)
 		return (NULL);
@@ -51,7 +51,7 @@ g_struct	*new_strct(int const fd, g_struct *next)
 	return (new);
 }
 
-int		get_next_line(int const fd, char **line)
+int			get_next_line(int const fd, char **line)
 {
 	static g_struct *strct = NULL;
 	int				i;
@@ -77,7 +77,7 @@ int		get_next_line(int const fd, char **line)
 	return (readline(&strct, line));
 }
 
-int		return_line(g_struct *strct, char **line)
+int			return_line(g_struct *strct, char **line)
 {
 	int		i;
 	char	*tmp;
@@ -105,7 +105,7 @@ int		return_line(g_struct *strct, char **line)
 	return (0);
 }
 
-int		readline(g_struct **strct, char **line)
+int			readline(g_struct **strct, char **line)
 {
 	int		ret;
 	char	*tmp;
@@ -122,7 +122,7 @@ int		readline(g_struct **strct, char **line)
 			free((*strct)->save);
 			(*strct)->save = tmp;
 		}
-		ft_bzero((*strct)->buf, BUFF_SIZE + 1);
+		ft_bzero((*strct)->buf, BUFF_SIZE);
 	}
 	if ((*strct)->save != NULL && ret == 0)
 	{
